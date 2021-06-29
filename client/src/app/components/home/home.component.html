@@ -1,0 +1,129 @@
+<div class="row">
+    <div class="col-md-12 mt-4">
+        <div class="card mb-3">
+            <div class="card-header text-white cardheader">REPORTE DE SERVICIO EQUIPOS VENDING</div>
+            <div class="card-body">
+              <h5 class="card-title">¿Cómo podemos ayudarle?</h5>
+              <hr>
+                <div class="row">
+                    <div class="col-md-4 mt-3">
+                        <label for="numEmp">Número de empleado</label>
+                        <input [(ngModel)]="numEmp" placeholder="Escriba su número de empleado..." type="text" class="form-control">
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <label for="numEmp">Nombre</label>
+                        <input [(ngModel)]="nomEmp" placeholder="Escriba su nombre..." type="text" class="form-control">
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <label>Sucursal</label>
+                        <div class="ng-autocomplete" id="inputRegiones" >
+                            <ng-autocomplete #inputRegiones name="regiones"
+                                [data]="puntosventavending"
+                                [disabled]="inputsDisabled"
+                                [searchKeyword]="keyword"
+                                (selected)='selectEventPventaVending($event)'
+                                [placeholder]='placeholderRegion'
+                                (inputChanged)='onChangeSearch($event)'
+                                (inputCleared)='onCleared($event)'
+                                (inputFocused)='onFocusedRegion($event)'
+                                [itemTemplate]="itemTemplateRegion"
+                                [notFoundTemplate]="notFoundTemplate">
+                            </ng-autocomplete>
+                            <ng-template #itemTemplateRegion let-item>
+                                <a>
+                                <span [innerHTML]="item.descripcion"></span>
+                                </a>
+                            </ng-template>
+                            <ng-template #notFoundTemplate let-notFound>
+                                <div [innerHTML]="notFound"></div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mt-3">
+                        <label for="plaza">Ciudad</label>
+                        <input [(ngModel)]="plaza" class="form-control" [disabled]=true type="text" name="plaza" id="plaza" placeholder="Plaza en que se encuentra la máquina">
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <label for="tipomaq">Tipo de máquina</label>
+                        <select [(ngModel)]="idpventa" id="tipomaq" class="form-control" name="tipomaq">
+                            <option value = "" disabled selected>Selecciona un tipo de máquina...</option>
+                            <option *ngFor="let tipomaq of tiposmaqselect " value="{{ tipomaq.id }}">{{ tipomaq.tipo_maq }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <label for="problemareportado">Problema reportado</label>
+                        <select [(ngModel)]="problema" [disabled]="selectDisabled" id="problema" class="form-control" name="problema">
+                            <option value = "" disabled selected>Selecciona un problema...</option>
+                            <option *ngFor="let problema of problemascomunes " value="{{ problema.id }}">{{ problema.problema }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                <label for="correo">Correo de contacto</label>
+                                <input class="form-control" placeholder="Escriba su correo..." type="email" name="correo" [(ngModel)]="correo">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                <label for="correo">Teléfono de contacto</label>
+                                <input class="form-control" placeholder="Escriba su telefono..." type="text" name="telefono" [(ngModel)]="telefono">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <label for="comments">Comentarios</label>
+                        <textarea [(ngModel)]="comentarios" placeholder="Escriba la descripción del problema..." class="form-control" name="comentarios" id="commentsinput" cols="50" rows="5"></textarea>
+                    </div>
+                    <div class="col-md-4 mt-4 mb-auto">
+                        <div class="row d-flex justify-content-center">
+                            <!-- <div class="col-md-8 mt-auto mb-auto">
+                                <button (click)="registraReporte()" class="mt-3 form-control btn btn-success">Hacer reporte<i class="far fa-share-square ml-2"></i></button>
+                            </div> -->
+                            <div id="octagon" (click)="registraReporte()">
+                                <div class="textoctagon">
+                                   <p>Hacer reporte </p><i class="fas fa-exclamation"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-8 mt-auto mb-auto">
+                                <button (click)="clearInputs()" class="mt-3 form-control btn btn-warning">Limpiar formulario<i class="fas fa-snowplow ml-2"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!--Modal de confirmación de registro de reporte-->
+<div class="modal fade" id="nuevoReporteModal" tabindex="-1" aria-labelledby="nuevoReporteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-light">
+          <h5 class="modal-title">Reporte registrado</h5>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-success" role="alert">
+                          <p>¡El reporte fue registrado exitosamente! el día: {{dia}} a la hora: {{hora}} con el número de  folio: </p>
+                          <p class="folioregistro">{{ reporteid }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continuar</button>
+        </div>
+      </div>
+    </div>
+</div>
