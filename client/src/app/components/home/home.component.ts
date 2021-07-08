@@ -93,6 +93,7 @@ export class HomeComponent implements OnInit {
           this.responsereporte=res
           this.reporteid=this.responsereporte.insertId
           this.enviarCorreo({email:this.correo,folioreporte:this.reporteid})
+          this.enviarCorreoInterno({email:this.correo,folioreporte:this.reporteid})
           this.dia=moment().format('DD-MM-YYYY')
           this.hora=moment().format('hh:mm A')
           this.clearInputs()
@@ -110,6 +111,27 @@ export class HomeComponent implements OnInit {
 
   enviarCorreo(reporte){
     this.reportesService.enviarEmail({fecha:moment().format('DD-MM-YYYY'),folio:reporte.folioreporte,hora:moment().format('hh:mm A'),email:reporte.email}).subscribe(
+      res=>{
+        if(res.hasOwnProperty('Ok')){
+          console.log('se envió el correo con éxito')
+        }
+      },
+      err=>{
+        console.log('ocurrió un error')
+      }
+    )
+  }
+  enviarCorreoInterno(reporte){
+    let emails = ['r.saravia@kiosko.com.mx, a.gomez@kiosko.com.mx, callcenter@kiosko.com.mx']
+    let emailspruebas='e.favela@kiosko.com.mx, j.sanchez@kiosko.com.mx'
+    let sucursal=$('#inputSucursal').find('input:text').val()
+    let problema=$('#problema option:selected').text()
+    let maquina=$('#tipomaq option:selected').text()
+    let ciudad= $('#plaza').val() 
+    let reportecontents = {comments:this.comentarios,ciudad:ciudad,maq:maquina,problema:problema,correo:this.correo,telefono:this.telefono, numEmp:this.numEmp, persona:this.nomEmp, sucursal:sucursal,
+      fecha:moment().format('DD-MM-YYYY'),folio:reporte.folioreporte,hora:moment().format('hh:mm A'),email:emailspruebas}
+    console.log(reportecontents)  
+    this.reportesService.enviarEmailinterno(reportecontents).subscribe(
       res=>{
         if(res.hasOwnProperty('Ok')){
           console.log('se envió el correo con éxito')

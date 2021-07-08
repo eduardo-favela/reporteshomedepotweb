@@ -16,7 +16,7 @@ const database_1 = __importDefault(require("../database"));
 class ProblemasComunesController {
     getproblemasvending(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.default.query(`select * from problemascomunes where tipomaq in ('vending','todas')`, function (err, result, fields) {
+            yield database_1.default.query(`select * from problemascomunes where tipomaq in ('vending','todas') order by problema`, function (err, result, fields) {
                 if (err)
                     throw err;
                 res.json(result);

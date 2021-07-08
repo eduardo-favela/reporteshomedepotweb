@@ -13,6 +13,7 @@ class ReportesRoutes {
     config() {
         this.router.post('/registrareporte', reportesController_1.default.registrareporte);
         this.router.post('/enviarEmail', reportesController_1.default.enviarEmail);
+        this.router.post('/enviarEmailinterno', reportesController_1.default.enviarEmailinterno);
     }
 }
 const reportesRoutes = new ReportesRoutes();

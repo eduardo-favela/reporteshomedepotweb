@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-md-4 mt-3">
                         <label for="numEmp">Número de empleado</label>
-                        <input [(ngModel)]="numEmp" placeholder="Escriba su número de empleado..." type="text" class="form-control">
+                        <input [(ngModel)]="numEmp" placeholder="Escriba su número de empleado..." type="number" class="form-control">
                     </div>
                     <div class="col-md-4 mt-3">
                         <label for="numEmp">Nombre</label>
@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-4 mt-3">
                         <label>Sucursal</label>
-                        <div class="ng-autocomplete" id="inputRegiones" >
+                        <div class="ng-autocomplete" id="inputSucursal" >
                             <ng-autocomplete #inputRegiones name="regiones"
                                 [data]="puntosventavending"
                                 [disabled]="inputsDisabled"
@@ -65,13 +65,13 @@
                         <div class="row">
                             <div class="col-md-12 mt-3">
                                 <label for="correo">Correo de contacto</label>
-                                <input class="form-control" placeholder="Escriba su correo..." type="email" name="correo" [(ngModel)]="correo">
+                                <input id="correo" class="form-control" placeholder="Escriba su correo..." type="email" name="correo" [(ngModel)]="correo">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 mt-3">
                                 <label for="correo">Teléfono de contacto</label>
-                                <input class="form-control" placeholder="Escriba su telefono..." type="text" name="telefono" [(ngModel)]="telefono">
+                                <input id="telefono" class="form-control" placeholder="Escriba su telefono..." type="text" name="telefono" [(ngModel)]="telefono">
                             </div>
                         </div>
                     </div>

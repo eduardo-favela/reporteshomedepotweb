@@ -15,4 +15,7 @@ export class ReportesService {
   enviarEmail(reporte){
     return this.http.post(`${API_URI}/reportes/enviarEmail`,reporte)
   }
+  enviarEmailinterno(reporte){
+    return this.http.post(`${API_URI}/reportes/enviarEmailinterno`,reporte)
+  }
 }

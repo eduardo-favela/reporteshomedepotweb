@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import db from '../database'
-import problemasComunesRoutes from '../routes/problemasComunesRoutes'
+
 
 class ProblemasComunesController {
     public async getproblemasvending(req: Request, res: Response){
-        await db.query(`select * from problemascomunes where tipomaq in ('vending','todas')`, function(err, result, fields){
+        await db.query(`select * from problemascomunes where tipomaq in ('vending','todas') order by problema`, function(err, result, fields){
             if(err) throw err
             res.json(result)
         })

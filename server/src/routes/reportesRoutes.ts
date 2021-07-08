@@ -11,6 +11,7 @@ class ReportesRoutes {
     config(): void{
         this.router.post('/registrareporte', reportesController.registrareporte)
         this.router.post('/enviarEmail', reportesController.enviarEmail)
+        this.router.post('/enviarEmailinterno', reportesController.enviarEmailinterno)
     }
 }
 
