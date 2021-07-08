@@ -25,7 +25,7 @@ registerLocaleData(localeEs)
 
 const routes:Route[]=[
   {path:'', component:HomeComponent},
-  {path:'reportekiosko', component:ReporteskioskoComponent},
+  {path:'ana', component:ReporteskioskoComponent},
   {path:'vereportes', component:VerreportesComponent},
 ]
 
