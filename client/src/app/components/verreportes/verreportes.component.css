@@ -1,8 +1,13 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .cardheader{
     background-color: midnightblue;
     text-align: center;
   }
 
-  th{
+  thead{
     background-color: midnightblue;
   }

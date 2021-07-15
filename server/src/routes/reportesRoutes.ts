@@ -13,6 +13,9 @@ class ReportesRoutes {
         this.router.post('/enviarEmail', reportesController.enviarEmail)
         this.router.post('/enviarEmailinterno', reportesController.enviarEmailinterno)
         this.router.post('/registrahistorial', reportesController.registrahistorial)
+        this.router.post('/getreportefolio', reportesController.getreportesvendingFolio)
+        this.router.post('/getreportesvending', reportesController.getreportesvending)
+        this.router.get('/getestatus', reportesController.getestatus)
     }
 }
 

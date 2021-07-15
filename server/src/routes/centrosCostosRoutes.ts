@@ -12,6 +12,7 @@ class CentrosCostosRoutes{
         this.router.get('/todos', centrosCostosController.todos)
         this.router.get('/todosvending',centrosCostosController.todosvending)
         this.router.get('/tiposmaqpv',centrosCostosController.maquinasenpv)
+        this.router.get('/getsucursales',centrosCostosController.getsucursales)
     }
 }
 

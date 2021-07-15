@@ -24,9 +24,45 @@ class ReportesController {
             });
         });
     }
+    getreportesvendingFolio(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body.folio);
+            yield database_1.default.query(`SELECT reportesvending.id, estado_reporte.estado_reporte as estatus, 
+        tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
+        date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios
+        FROM reportesvending 
+        inner join problemascomunes on reportesvending.problema_reportado=problemascomunes.id
+        inner join estado_reporte on reportesvending.estatus=estado_reporte.idestado_reporte
+        inner join tipomaq on reportesvending.tipomaq=tipomaq.idtipomaq
+        where reportesvending.id=?`, req.body.folio, function (err, result, fields) {
+                if (err)
+                    throw err;
+                res.json(result);
+            });
+        });
+    }
     getreportesvending(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.default.query(`SELECT * FROM reportesvending where fecha between = ? and ?`, req.body, function (err, result, fields) {
+            console.log(req.body.folio);
+            yield database_1.default.query(`SELECT reportesvending.id, estado_reporte.estado_reporte as estatus, 
+        tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
+        date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios
+        FROM reportesvending 
+        inner join problemascomunes on reportesvending.problema_reportado=problemascomunes.id
+        inner join estado_reporte on reportesvending.estatus=estado_reporte.idestado_reporte
+        inner join tipomaq on reportesvending.tipomaq=tipomaq.idtipomaq
+        inner join puntos_venta_vending on reportesvending.puntoventa=puntos_venta_vending.idtienda
+        where reportesvending.fecha between ? and ?
+        and reportesvending.estatus in (?) and puntos_venta_vending.estado in (?);`, [req.body.fecha1, req.body.fecha2, req.body.estatus, req.body.sucursal], function (err, result, fields) {
+                if (err)
+                    throw err;
+                res.json(result);
+            });
+        });
+    }
+    getestatus(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.default.query(`select idestado_reporte as idestatus,estado_reporte as estatus from estado_reporte order by idestado_reporte;`, req.body, function (err, result, fields) {
                 if (err)
                     throw err;
                 res.json(result);

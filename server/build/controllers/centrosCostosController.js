@@ -42,6 +42,15 @@ class CentrosCostosController {
             });
         });
     }
+    getsucursales(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.default.query(`select estado from puntos_venta_vending group by estado order by estado;`, req.body.sucursal, function (err, result, fields) {
+                if (err)
+                    throw err;
+                res.json(result);
+            });
+        });
+    }
 }
 const centrosCostosController = new CentrosCostosController();
 exports.default = centrosCostosController;

@@ -86,25 +86,29 @@ export class HomeComponent implements OnInit {
   }
 
   registraReporte(){
-    /* console.log(moment().format('hh:mm A')) */
     if(this.nomEmp&&this.idpventa&&this.problema&&this.correo&&this.telefono&&this.comentarios){
-      this.reportesService.registraReporte({tipomaq:this.tipomaq,problema_reportado:this.problema, puntoventa:this.idpventa, nombre_report:this.nomEmp, comentarios:this.comentarios, correo_contacto:this.correo, telcontacto:this.telefono}).subscribe(
-        res=>{
-          console.log(res)
-          this.responsereporte=res
-          this.reporteid=this.responsereporte.insertId
-          this.registrahistorial(this.reporteid)
-          this.enviarCorreo({email:this.correo,folioreporte:this.reporteid})
-          this.enviarCorreoInterno({email:this.correo,folioreporte:this.reporteid})
-          this.dia=moment().format('DD-MM-YYYY')
-          this.hora=moment().format('hh:mm A')
-          this.clearInputs()
-          $('#nuevoReporteModal').modal('show')
-        },
-        err=>{
-          alert('Ocurrió un error al registrar el reporte')
-        }
-      )
+      if(this.telefono.length==10){
+        this.reportesService.registraReporte({estatus:1,tipomaq:this.tipomaq,problema_reportado:this.problema, puntoventa:this.idpventa, nombre_report:this.nomEmp, comentarios:this.comentarios, correo_contacto:this.correo, telcontacto:this.telefono}).subscribe(
+          res=>{
+            console.log(res)
+            this.responsereporte=res
+            this.reporteid=this.responsereporte.insertId
+            this.registrahistorial(this.reporteid)
+            this.enviarCorreo({email:this.correo,folioreporte:this.reporteid})
+            this.enviarCorreoInterno({email:this.correo,folioreporte:this.reporteid})
+            this.dia=moment().format('DD-MM-YYYY')
+            this.hora=moment().format('hh:mm A')
+            this.clearInputs()
+            $('#nuevoReporteModal').modal('show')
+          },
+          err=>{
+            alert('Ocurrió un error al registrar el reporte')
+          }
+        )
+      }
+      else{
+        alert("El número de teléfono no es válido")
+      }
     }
     else{
       console.log(this.nomEmp,this.idpventa,this.problema,this.correo,this.telefono,this.comentarios)
@@ -131,7 +135,7 @@ export class HomeComponent implements OnInit {
         }
       },
       err=>{
-        console.log('ocurrió un error')
+        alert('ocurrió un error')
       }
     )
   }
@@ -151,7 +155,7 @@ export class HomeComponent implements OnInit {
         }
       },
       err=>{
-        console.log('ocurrió un error')
+        alert('ocurrió un error')
       }
     )
   }
@@ -162,7 +166,7 @@ export class HomeComponent implements OnInit {
         this.tiposmaqselect=res
       },
       err=>{
-        console.log('Ocurrió un error')
+        alert('Ocurrió un error')
       }
     )
   }
@@ -171,7 +175,6 @@ export class HomeComponent implements OnInit {
   selectEventPventaVending(item){
     this.plaza=item.plaza
     this.idpventa=item.idtienda
-    console.log("idpuntoventa: ",item.idtienda)
     /* this.getTiposMaq(item.descripcion) */
   }
 

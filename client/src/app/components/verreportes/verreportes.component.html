@@ -2,24 +2,57 @@
     <div class="col-md-12 mt-4">
         <div class="card mb-3">
             <div class="card-header text-light text-white cardheader">VER REPORTES</div>
-            <div class="card-body">              
+            <div class="card-body">
               <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label for="folio" class="form-label">Folio de reporte</label>
-                    <input name="folio" class="form-control" id="inputfolio" type="text" placeholder="Introduzca el folio del reporte" aria-label="">
+                <div class="col-md-3 mb-3">
+                  <label for="folio" class="form-label">Folio de reporte</label>
+                  <div class="input-group">
+                    <input #folioreporte name="folioreporte" id="folioreporte" type="number" class="form-control" placeholder="Escriba el folio del reporte" aria-describedby="button-addon2">
+                    <button (click)="buscaReporteFolio(folioreporte.value)" class="btn btn-primary" type="button" id="button-addon2">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="" class="form-label">Fecha inicial</label>
-                  <input class="form-control" id="" type="text" placeholder="" aria-label="">
+              </div>
+              <hr class="mb-4">
+              <div class="row d-flex justify-content-between">
+                <div class="col-md-2 mb-3">
+                  <label for="fecha1" class="form-label">Fecha inicial</label>
+                  <input [(ngModel)]="fecha1" class="form-control" name="Fecha1" id="fecha1" type="date" placeholder="Seleccione la fecha inicial" aria-label="">
+                </div>
+                <div class="col-md-2 mb-3">
+                  <label for="fecha2" class="form-label">Fecha límite</label>
+                  <input [(ngModel)]="fecha2" class="form-control" name="Fecha2" id="fecha2" type="date" placeholder="Seleccione la fecha límite" aria-label="">
+                </div>
+                <div class="col-md-2 mb-3">
+                  <label for="sucursal">Sucursal</label>
+                  <select [(ngModel)]="sucursal" class="form-control" name="sucursal" id="sucursalselect">
+                    <option value = null disabled selected>Seleccione una sucursal...</option>
+                    <option value = "Todos">Todas</option>
+                    <option *ngFor="let sucursal of sucursales " value="{{ sucursal.estado }}">{{ sucursal.estado }}</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label for="estatus">Estatus</label>
+                  <select [(ngModel)]="estatusrep" class="form-control" name="estatus" id="estatusselect">
+                    <option value = null disabled selected>Seleccione un estatus...</option>
+                    <option value = "Todos">Todos</option>
+                    <option *ngFor="let estado of estatus " value="{{ estado.idestatus }}">{{ estado.estatus }}</option>
+                  </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                  <button (click)="buscaReportes()" type="button" name="searchreports" id="btnbuscar" class="mt-4 form-control btn btn-primary">Buscar reportes <i class="ml-3 fa fa-search" aria-hidden="true"></i></button>
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" [hidden]="noInfo">
               <div class="col-md-12">
-                <table class="cardheader table table-responsive-lg table-hover table-dark">
+                <table class="table table-responsive-lg table-hover text-white">
                   <thead>
                       <tr>
                       <th scope="col">Folio</th>
+                      <th scope="col">Estatus</th>
+                      <th scope="col">Tipo de máquina</th>
                       <th scope="col">Problema reportado</th>
                       <th scope="col">Fecha de reporte</th>
                       <th scope="col">Persona que reportó</th>
@@ -28,18 +61,48 @@
                       </tr>
                   </thead>
                   <tbody>
-                     <!-- <tr *ngFor="let familia of familias" class="table-active">
-                      <th scope="row">{{familia.familia}}</th>
-                      <td>{{familia.meta | number}}</td>
-                      <td>{{familia.progreso | number}}</td>
-                      <td>{{familia.restante | number}}</td>
-                      <td>{{(familia.porcentajeprogreso*100) | number:'1.0-2'}}%</td>
-                      <td>{{(familia.progresocumplimientoglobal*100) | number:'1.0-2'}}%</td>
-                      </tr> -->
+                     <tr *ngFor="let reporte of reportes" class="table-active">
+                        <th scope="row">{{reporte.id}}</th>
+                        <td>{{reporte.estatus}}</td>
+                        <td>{{reporte.tipomaq}}</td>
+                        <td>{{reporte.problema_reportado}}</td>
+                        <td>{{reporte.fecha}}</td>
+                        <td>{{reporte.nombre}}</td>
+                        <td>{{reporte.comentarios}}</td>
+                        <td></td>
+                      </tr>
                   </tbody>
                 </table>
               </div>
             </div>
+            <div class="jumbotron shadow-sm" [hidden]="!noInfo">
+              <h3><i class="fas fa-info-circle pr-3"></i>No hay información para mostrar.</h3>
+            </div>
         </div>
     </div>
+</div>
+
+<div class="modal" id="noreportemodal" role="dialog" tabindex="-1" aria-labelledby="noreportemodal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header cardheader text-light">
+        <h5 class="modal-title">Aviso</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="alert alert-warning" role="alert"><i class="mr-2 fa fa-exclamation-triangle" aria-hidden="true"></i> No se encontraron reportes con los datos proporcionados</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-block btn-primary" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
 </div>

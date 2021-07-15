@@ -21,4 +21,13 @@ export class ReportesService {
   registrahistorial(reporte){
     return this.http.post(`${API_URI}/reportes/registrahistorial`,reporte)
   }
+  getestatus(){
+    return this.http.get(`${API_URI}/reportes/getestatus`)
+  }
+  getreportefolio(folio){
+    return this.http.post(`${API_URI}/reportes/getreportefolio`,folio)
+  }
+  getreportesvending(filtros){
+    return this.http.post(`${API_URI}/reportes/getreportesvending`,filtros)
+  }
 }

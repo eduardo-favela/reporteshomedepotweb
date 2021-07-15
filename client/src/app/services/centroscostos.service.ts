@@ -16,4 +16,8 @@ export class CentroscostosService {
   gettiposmaqvending(){
     return this.http.get(`${API_URI}/centrosCostos/tiposmaqpv`)
   }
+
+  getsucursales(){
+    return this.http.get(`${API_URI}/centrosCostos/getsucursales`)
+  }
 }

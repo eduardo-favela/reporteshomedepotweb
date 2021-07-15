@@ -15,6 +15,9 @@ class ReportesRoutes {
         this.router.post('/enviarEmail', reportesController_1.default.enviarEmail);
         this.router.post('/enviarEmailinterno', reportesController_1.default.enviarEmailinterno);
         this.router.post('/registrahistorial', reportesController_1.default.registrahistorial);
+        this.router.post('/getreportefolio', reportesController_1.default.getreportesvendingFolio);
+        this.router.post('/getreportesvending', reportesController_1.default.getreportesvending);
+        this.router.get('/getestatus', reportesController_1.default.getestatus);
     }
 }
 const reportesRoutes = new ReportesRoutes();

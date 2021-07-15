@@ -21,6 +21,12 @@ class CentrosCostosController {
             res.json(result)
         })
     }
+    public async getsucursales(req: Request, res: Response){
+        await db.query(`select estado from puntos_venta_vending group by estado order by estado;`,req.body.sucursal, function(err, result, fields){
+            if(err) throw err
+            res.json(result)
+        })
+    }
 }
 
 const centrosCostosController = new CentrosCostosController()
