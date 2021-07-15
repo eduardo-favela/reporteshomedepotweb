@@ -25,8 +25,8 @@ class CentrosCostosController {
     }
     todosvending(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.default.query(`select idtienda as id, concat(idtienda, ', ', trim(tienda)) as descripcion, municipio as plaza
-         from puntos_venta_vending`, function (err, result, fields) {
+            yield database_1.default.query(`select idtienda,concat(idtienda, ', ', trim(tienda)) as descripcion, concat(municipio, ', ',estado)as plaza 
+        from puntos_venta_vending`, function (err, result, fields) {
                 if (err)
                     throw err;
                 res.json(result);

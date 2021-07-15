@@ -9,8 +9,8 @@ class CentrosCostosController {
         })
     }
     public async todosvending(req: Request, res: Response){
-        await db.query(`select idtienda as id, concat(idtienda, ', ', trim(tienda)) as descripcion, municipio as plaza
-         from puntos_venta_vending`, function(err, result, fields){
+        await db.query(`select idtienda,concat(idtienda, ', ', trim(tienda)) as descripcion, concat(municipio, ', ',estado)as plaza 
+        from puntos_venta_vending`, function(err, result, fields){
             if(err) throw err
             res.json(result)
         })

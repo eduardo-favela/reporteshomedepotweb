@@ -136,7 +136,7 @@ export class HomeComponent implements OnInit {
     )
   }
   enviarCorreoInterno(reporte){
-    let emailspruebas='e.favela@kiosko.com.mx, j.sanchez@kiosko.com.mx'
+    let emailspruebas='e.favela@kiosko.com.mx'
     let sucursal=$('#inputSucursal').find('input:text').val()
     let problema=$('#problema option:selected').text()
     let maquina=$('#tipomaq option:selected').text()
@@ -170,7 +170,8 @@ export class HomeComponent implements OnInit {
   ///////////////////////////////////AUTOCOMPLETES///////////////////////////////////
   selectEventPventaVending(item){
     this.plaza=item.plaza
-    this.idpventa=item.id
+    this.idpventa=item.idtienda
+    console.log("idpuntoventa: ",item.idtienda)
     /* this.getTiposMaq(item.descripcion) */
   }
 
