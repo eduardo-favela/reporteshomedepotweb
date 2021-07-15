@@ -25,8 +25,8 @@ class CentrosCostosController {
     }
     todosvending(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.default.query(`select sucursal as descripcion, ciudad as plaza from puntos_venta_vending
-        where nombre like ('%Home Depot México, S. de R.L. de C.V.%') group by sucursal, ciudad`, function (err, result, fields) {
+            yield database_1.default.query(`select idtienda as id, concat(idtienda, ', ', trim(tienda)) as descripcion, municipio as plaza
+         from puntos_venta_vending`, function (err, result, fields) {
                 if (err)
                     throw err;
                 res.json(result);
@@ -35,8 +35,7 @@ class CentrosCostosController {
     }
     maquinasenpv(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.default.query(`select idpuntos_venta_vending as id, tipo_maq from puntos_venta_vending
-        where sucursal=?;`, req.body.sucursal, function (err, result, fields) {
+            yield database_1.default.query(`select * from tipomaq order by idtipomaq;`, req.body.sucursal, function (err, result, fields) {
                 if (err)
                     throw err;
                 res.json(result);

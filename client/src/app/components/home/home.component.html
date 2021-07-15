@@ -5,14 +5,10 @@
             <div class="card-body">
               <h5 class="card-title">¿Cómo podemos ayudarle?</h5>
               <hr>
-                <div class="row">
-                    <div class="col-md-4 mt-3">
-                        <label for="numEmp">Número de empleado</label>
-                        <input [(ngModel)]="numEmp" placeholder="Escriba su número de empleado..." type="number" class="form-control">
-                    </div>
+                <div class="row">                    
                     <div class="col-md-4 mt-3">
                         <label for="numEmp">Nombre</label>
-                        <input [(ngModel)]="nomEmp" placeholder="Escriba su nombre..." type="text" class="form-control">
+                        <input [(ngModel)]="nomEmp" name="nombre" placeholder="Escriba su nombre..." type="text" class="form-control">
                     </div>
                     <div class="col-md-4 mt-3">
                         <label>Sucursal</label>
@@ -47,9 +43,9 @@
                     </div>
                     <div class="col-md-4 mt-3">
                         <label for="tipomaq">Tipo de máquina</label>
-                        <select [(ngModel)]="idpventa" id="tipomaq" class="form-control" name="tipomaq">
-                            <option value = "" disabled selected>Selecciona un tipo de máquina...</option>
-                            <option *ngFor="let tipomaq of tiposmaqselect " value="{{ tipomaq.id }}">{{ tipomaq.tipo_maq }}</option>
+                        <select [(ngModel)]="tipomaq" id="tipomaq" class="form-control" name="tipomaq">
+                            <option value = null disabled selected>Selecciona un tipo de máquina...</option>
+                            <option *ngFor="let tipomaq of tiposmaqselect " value="{{ tipomaq.idtipomaq }}">{{ tipomaq.tipomaq }}</option>
                         </select>
                     </div>
                     <div class="col-md-4 mt-3">
@@ -77,7 +73,7 @@
                     </div>
                     <div class="col-md-4 mt-3">
                         <label for="comments">Comentarios</label>
-                        <textarea [(ngModel)]="comentarios" placeholder="Escriba la descripción del problema..." class="form-control" name="comentarios" id="commentsinput" cols="50" rows="5"></textarea>
+                        <textarea [(ngModel)]="comentarios" placeholder="Escriba la descripción del problema..." class="form-control" name="comments" id="commentsinput" cols="50" rows="5"></textarea>
                     </div>
                     <div class="col-md-4 mt-4 mb-auto">
                         <div class="row d-flex justify-content-center">

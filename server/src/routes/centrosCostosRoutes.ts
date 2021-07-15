@@ -11,7 +11,7 @@ class CentrosCostosRoutes{
     config(): void{
         this.router.get('/todos', centrosCostosController.todos)
         this.router.get('/todosvending',centrosCostosController.todosvending)
-        this.router.post('/tiposmaqpv',centrosCostosController.maquinasenpv)
+        this.router.get('/tiposmaqpv',centrosCostosController.maquinasenpv)
     }
 }
 

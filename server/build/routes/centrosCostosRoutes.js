@@ -13,7 +13,7 @@ class CentrosCostosRoutes {
     config() {
         this.router.get('/todos', centrosCostosController_1.default.todos);
         this.router.get('/todosvending', centrosCostosController_1.default.todosvending);
-        this.router.post('/tiposmaqpv', centrosCostosController_1.default.maquinasenpv);
+        this.router.get('/tiposmaqpv', centrosCostosController_1.default.maquinasenpv);
     }
 }
 const centrosCostosRoutes = new CentrosCostosRoutes();

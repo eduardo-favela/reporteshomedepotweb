@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   ///////////////////////////////////AUTOCOMPLETES///////////////////////////////////
 
   ///////////////////////////////////VARIABLES Y PROPIEDADES GLOBALES DE LA CLASE///////////////////////////////////
-  tipomaq = ""
+  tipomaq = null
   plaza = null
   problemascomunes : any = null
   selectDisabled = false
@@ -33,7 +33,6 @@ export class HomeComponent implements OnInit {
   tiposmaq : any = null
   tiposmaqselect : any = []
   telefono=null
-  numEmp = null
   nomEmp = null
   reporteid = null
   responsereporte : any
@@ -42,8 +41,9 @@ export class HomeComponent implements OnInit {
   ///////////////////////////////////VARIABLES Y PROPIEDADES GLOBALES DE LA CLASE///////////////////////////////////
 
   ngOnInit(): void {
-    this.getPuntosVentaKiosko()
+    this.getPuntosVentaVending()
     this.getProblemasComunesVending()
+    this.getTiposMaq()
   }
 
   getProblemasComunesVending(){
@@ -59,10 +59,11 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  getPuntosVentaKiosko(){
+  getPuntosVentaVending(){
     this.inputsDisabled = true
     this.centroscostosService.verCentrosCostosTodos().subscribe(
       res=>{
+        console.log(res)
         this.puntosventavending = res
         this.inputsDisabled = false
       },
@@ -74,7 +75,6 @@ export class HomeComponent implements OnInit {
   
   clearInputs(){
     this.inputpventas.clear()
-    this.numEmp=null
     this.nomEmp=null
     this.idpventa=""
     this.problema=""
@@ -82,16 +82,18 @@ export class HomeComponent implements OnInit {
     this.telefono=null
     this.comentarios=null
     this.plaza=null
+    this.tipomaq=null
   }
 
   registraReporte(){
     /* console.log(moment().format('hh:mm A')) */
-    if(this.numEmp&&this.nomEmp&&this.idpventa&&this.problema&&this.correo&&this.telefono&&this.comentarios){
-      this.reportesService.registraReporte({problema_reportado:this.problema, puntoventa:this.idpventa, fecha:moment().format('YYYY-MM-DD'), num_emp:this.numEmp, nombre_report:this.nomEmp, comentarios:this.comentarios, correo_contacto:this.correo, telcontacto:this.telefono}).subscribe(
+    if(this.nomEmp&&this.idpventa&&this.problema&&this.correo&&this.telefono&&this.comentarios){
+      this.reportesService.registraReporte({tipomaq:this.tipomaq,problema_reportado:this.problema, puntoventa:this.idpventa, nombre_report:this.nomEmp, comentarios:this.comentarios, correo_contacto:this.correo, telcontacto:this.telefono}).subscribe(
         res=>{
           console.log(res)
           this.responsereporte=res
           this.reporteid=this.responsereporte.insertId
+          this.registrahistorial(this.reporteid)
           this.enviarCorreo({email:this.correo,folioreporte:this.reporteid})
           this.enviarCorreoInterno({email:this.correo,folioreporte:this.reporteid})
           this.dia=moment().format('DD-MM-YYYY')
@@ -105,8 +107,20 @@ export class HomeComponent implements OnInit {
       )
     }
     else{
+      console.log(this.nomEmp,this.idpventa,this.problema,this.correo,this.telefono,this.comentarios)
       alert('Se deben llenar todos los campos para registrar un reporte')
     }
+  }
+  
+  registrahistorial(reporte){
+    this.reportesService.registrahistorial({estatus:1,reportevending:reporte}).subscribe(
+      res=>{
+        console.log('historial registrado con exito')
+      },
+      err=>{
+        console.log('ocurrió un error')
+      }
+    )
   }
 
   enviarCorreo(reporte){
@@ -122,13 +136,12 @@ export class HomeComponent implements OnInit {
     )
   }
   enviarCorreoInterno(reporte){
-    let emails = ['r.saravia@kiosko.com.mx, a.gomez@kiosko.com.mx, callcenter@kiosko.com.mx']
     let emailspruebas='e.favela@kiosko.com.mx, j.sanchez@kiosko.com.mx'
     let sucursal=$('#inputSucursal').find('input:text').val()
     let problema=$('#problema option:selected').text()
     let maquina=$('#tipomaq option:selected').text()
     let ciudad= $('#plaza').val() 
-    let reportecontents = {comments:this.comentarios,ciudad:ciudad,maq:maquina,problema:problema,correo:this.correo,telefono:this.telefono, numEmp:this.numEmp, persona:this.nomEmp, sucursal:sucursal,
+    let reportecontents = {comments:this.comentarios,ciudad:ciudad,maq:maquina,problema:problema,correo:this.correo,telefono:this.telefono, persona:this.nomEmp, sucursal:sucursal,
       fecha:moment().format('DD-MM-YYYY'),folio:reporte.folioreporte,hora:moment().format('hh:mm A'),email:emailspruebas}
     console.log(reportecontents)  
     this.reportesService.enviarEmailinterno(reportecontents).subscribe(
@@ -143,17 +156,10 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  getTiposMaq(sucursal){
-    this.centroscostosService.gettiposmaqvending({sucursal:sucursal}).subscribe(
+  getTiposMaq(){
+    this.centroscostosService.gettiposmaqvending().subscribe(
       res=>{
-        this.tiposmaq=res
-        this.tiposmaqselect=[]
-        for (let index = 0; index < this.tiposmaq.length; index++) {
-          if (!this.tiposmaqselect.some(e => e.tipo_maq === this.tiposmaq[index].tipo_maq)) {
-            /* barChartData contains the element we're looking for */
-            this.tiposmaqselect.push(this.tiposmaq[index])
-          }
-        }
+        this.tiposmaqselect=res
       },
       err=>{
         console.log('Ocurrió un error')
@@ -164,10 +170,9 @@ export class HomeComponent implements OnInit {
   ///////////////////////////////////AUTOCOMPLETES///////////////////////////////////
   selectEventPventaVending(item){
     this.plaza=item.plaza
-    this.getTiposMaq(item.descripcion)
+    this.idpventa=item.id
+    /* this.getTiposMaq(item.descripcion) */
   }
-
-
 
   onChangeSearch(val: string) {
     // fetch remote data from here

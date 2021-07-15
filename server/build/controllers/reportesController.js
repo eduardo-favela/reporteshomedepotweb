@@ -24,6 +24,24 @@ class ReportesController {
             });
         });
     }
+    getreportesvending(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.default.query(`SELECT * FROM reportesvending where fecha between = ? and ?`, req.body, function (err, result, fields) {
+                if (err)
+                    throw err;
+                res.json(result);
+            });
+        });
+    }
+    registrahistorial(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.default.query(`INSERT INTO historialreporte_vending set ?`, req.body, function (err, result, fields) {
+                if (err)
+                    throw err;
+                res.json(result);
+            });
+        });
+    }
     enviarEmail(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             // create reusable transporter object using the default SMTP transport
@@ -84,7 +102,6 @@ class ReportesController {
             <h4>
                 <ul>
                     <li>Folio del reporte: ${req.body.folio}</li>
-                    <li>Número de empleado de persona que reporta: ${req.body.numEmp}</li>
                     <li>Problema reportado: ${req.body.problema}</li>
                     <li>Persona que reportó el problema: ${req.body.persona}</li>
                     <li>Teléfono de contacto: ${req.body.telefono}</li>

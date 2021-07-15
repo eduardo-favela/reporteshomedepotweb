@@ -11,5 +11,5 @@ export class VerreportesComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  
 }

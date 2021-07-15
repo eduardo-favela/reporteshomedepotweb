@@ -18,4 +18,7 @@ export class ReportesService {
   enviarEmailinterno(reporte){
     return this.http.post(`${API_URI}/reportes/enviarEmailinterno`,reporte)
   }
+  registrahistorial(reporte){
+    return this.http.post(`${API_URI}/reportes/registrahistorial`,reporte)
+  }
 }

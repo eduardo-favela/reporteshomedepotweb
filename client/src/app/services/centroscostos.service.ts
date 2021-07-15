@@ -13,7 +13,7 @@ export class CentroscostosService {
     return this.http.get(`${API_URI}/centrosCostos/todosvending`)
   }
 
-  gettiposmaqvending(sucursal){
-    return this.http.post(`${API_URI}/centrosCostos/tiposmaqpv`,sucursal)
+  gettiposmaqvending(){
+    return this.http.get(`${API_URI}/centrosCostos/tiposmaqpv`)
   }
 }

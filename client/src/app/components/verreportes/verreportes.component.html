@@ -1,1 +1,45 @@
-<p>verreportes works!</p>
+<div class="row">
+    <div class="col-md-12 mt-4">
+        <div class="card mb-3">
+            <div class="card-header text-light text-white cardheader">VER REPORTES</div>
+            <div class="card-body">              
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="folio" class="form-label">Folio de reporte</label>
+                    <input name="folio" class="form-control" id="inputfolio" type="text" placeholder="Introduzca el folio del reporte" aria-label="">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="" class="form-label">Fecha inicial</label>
+                  <input class="form-control" id="" type="text" placeholder="" aria-label="">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="cardheader table table-responsive-lg table-hover table-dark">
+                  <thead>
+                      <tr>
+                      <th scope="col">Folio</th>
+                      <th scope="col">Problema reportado</th>
+                      <th scope="col">Fecha de reporte</th>
+                      <th scope="col">Persona que reportó</th>
+                      <th scope="col">Comentarios</th>
+                      <th scope="col">Historial de cambios</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                     <!-- <tr *ngFor="let familia of familias" class="table-active">
+                      <th scope="row">{{familia.familia}}</th>
+                      <td>{{familia.meta | number}}</td>
+                      <td>{{familia.progreso | number}}</td>
+                      <td>{{familia.restante | number}}</td>
+                      <td>{{(familia.porcentajeprogreso*100) | number:'1.0-2'}}%</td>
+                      <td>{{(familia.progresocumplimientoglobal*100) | number:'1.0-2'}}%</td>
+                      </tr> -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

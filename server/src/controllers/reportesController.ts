@@ -3,8 +3,24 @@ import db from '../database'
 import nodemailer from 'nodemailer'
 
 class ReportesController {
+
     public async registrareporte(req: Request, res: Response){
         await db.query(`INSERT INTO reportesvending set ?`,req.body, function(err, result, fields){
+            if(err) throw err
+            res.json(result)
+        })
+    }
+
+
+    public async getreportesvending(req: Request, res: Response){
+        await db.query(`SELECT * FROM reportesvending where fecha between = ? and ?`,req.body, function(err, result, fields){
+            if(err) throw err
+            res.json(result)
+        })
+    }
+    
+    public async registrahistorial(req: Request, res: Response){
+        await db.query(`INSERT INTO historialreporte_vending set ?`,req.body, function(err, result, fields){
             if(err) throw err
             res.json(result)
         })
@@ -69,7 +85,6 @@ class ReportesController {
             <h4>
                 <ul>
                     <li>Folio del reporte: ${req.body.folio}</li>
-                    <li>Número de empleado de persona que reporta: ${req.body.numEmp}</li>
                     <li>Problema reportado: ${req.body.problema}</li>
                     <li>Persona que reportó el problema: ${req.body.persona}</li>
                     <li>Teléfono de contacto: ${req.body.telefono}</li>
