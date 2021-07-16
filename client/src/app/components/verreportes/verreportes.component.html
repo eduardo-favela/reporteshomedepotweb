@@ -69,7 +69,7 @@
                         <td>{{reporte.fecha}}</td>
                         <td>{{reporte.nombre}}</td>
                         <td>{{reporte.comentarios}}</td>
-                        <td></td>
+                        <td><button (click)="onReporteButtonClick($event)" type="button" class="form-control btn btn-primary">Ver cambios en el reporte <i class="ml-3 far fa-file-alt" aria-hidden="true"></i></button></td>
                       </tr>
                   </tbody>
                 </table>
@@ -82,6 +82,7 @@
     </div>
 </div>
 
+<!-----------------------------------------MODAL DE ERROR DE REPORTE DE ERROR------------------------------------------>
 <div class="modal" id="noreportemodal" role="dialog" tabindex="-1" aria-labelledby="noreportemodal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -93,15 +94,56 @@
       </div>
       <div class="modal-body">
           <div class="container">
-              <div class="row">
-                  <div class="col-12">
-                      <div class="alert alert-warning" role="alert"><i class="mr-2 fa fa-exclamation-triangle" aria-hidden="true"></i> No se encontraron reportes con los datos proporcionados</div>
-                  </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="alert alert-warning" role="alert"><i class="mr-2 fa fa-exclamation-triangle" aria-hidden="true"></i> No se encontraron reportes con los datos proporcionados</div>
               </div>
+            </div>
           </div>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-block btn-primary" data-bs-dismiss="modal">Aceptar</button>
+        <button type="button" class="btn btn-block btn-primary" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------------MODAL DE HISTORIAL DE REPORTES------------------------------------------>
+<div class="modal" id="detallereportemodal" role="dialog" tabindex="-1" aria-labelledby="noreportemodal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header cardheader text-light">
+        <h5 class="modal-title">Historial de cambios en el reporte con el folio: {{idReporte}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-responsive-lg table-hover text-white">
+                  <thead>
+                      <tr>
+                      <th scope="col">Estatus</th>
+                      <th scope="col">Fecha del cambio</th>
+                      <th scope="col">Comentarios</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let detallereporte of detallesreporte" class="table-active">
+                        <td>{{detallereporte.estatus}}</td>
+                        <td>{{detallereporte.fecha}}</td>
+                        <td>{{detallereporte.comentarios}}</td>                        
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-block btn-primary" data-bs-dismiss="modal">Aceptar</button>
       </div>
     </div>
   </div>

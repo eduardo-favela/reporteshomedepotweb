@@ -11,3 +11,7 @@ input::-webkit-inner-spin-button {
   thead{
     background-color: midnightblue;
   }
+
+  i {
+    pointer-events: none
+  }

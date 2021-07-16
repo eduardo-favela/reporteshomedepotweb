@@ -29,6 +29,8 @@ export class VerreportesComponent implements OnInit {
   fecha2=null
   sucursal=null
   estatusrep=null
+  idReporte=null
+  detallesreporte : any = []
   ///////////////////////////////////VARIABLES Y PROPIEDADES GLOBALES DE LA CLASE///////////////////////////////////
 
   ///////////////////////////////////////////////////FUNCIONES//////////////////////////////////////////////////////
@@ -85,7 +87,7 @@ export class VerreportesComponent implements OnInit {
       estatusrep=(this.estatusrep=="Todos"?(this.estatus.map(a => a.idestatus)):(this.estatusrep))
       this.reportesService.getreportesvending({fecha1:this.fecha1,fecha2:this.fecha2,sucursal:sucursal,estatus:estatusrep}).subscribe(
         res=>{
-          console.log(res)
+          /* console.log(res) */
           this.responsereportes=res
           if(this.responsereportes.length>0){
             this.reportes=this.responsereportes
@@ -102,5 +104,23 @@ export class VerreportesComponent implements OnInit {
     }
   }
 
+  onReporteButtonClick(e){
+    this.idReporte = parseInt($(e.srcElement).parent().siblings('th:first').html())
+    this.reportesService.getdetallereporte({folioreporte:this.idReporte}).subscribe(
+      res=>{
+        this.detallesreporte=res
+        if(this.detallesreporte.length>0){
+          console.log(res)
+          $("#detallereportemodal").modal('show')          
+        }
+        else{
+
+        }
+      },
+      err=>{
+
+      }
+    )
+  }
   ///////////////////////////////////////////////////FUNCIONES//////////////////////////////////////////////////////
 }

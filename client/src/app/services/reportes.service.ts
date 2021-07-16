@@ -30,4 +30,7 @@ export class ReportesService {
   getreportesvending(filtros){
     return this.http.post(`${API_URI}/reportes/getreportesvending`,filtros)
   }
+  getdetallereporte(folio){
+    return this.http.post(`${API_URI}/reportes/getdetallereporte`,folio)
+  }
 }

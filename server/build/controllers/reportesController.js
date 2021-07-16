@@ -60,6 +60,21 @@ class ReportesController {
             });
         });
     }
+    getdetallereporte(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body.folio);
+            yield database_1.default.query(`SELECT estado_reporte.estado_reporte as estatus, reportevending as folioreporte, 
+        date_format(historialreporte_vending.fecha, '%d-%m-%Y %h:%i:%s %p') as fecha, historialreporte_vending.comentarios
+        from historialreporte_vending
+        inner join estado_reporte on historialreporte_vending.estatus=estado_reporte.idestado_reporte
+        inner join reportesvending on historialreporte_vending.reportevending=reportesvending.id
+        where reportevending=?;`, [req.body.folioreporte], function (err, result, fields) {
+                if (err)
+                    throw err;
+                res.json(result);
+            });
+        });
+    }
     getestatus(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.default.query(`select idestado_reporte as idestatus,estado_reporte as estatus from estado_reporte order by idestado_reporte;`, req.body, function (err, result, fields) {

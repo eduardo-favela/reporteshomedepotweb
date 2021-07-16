@@ -43,6 +43,19 @@ class ReportesController {
         })
     }
 
+    public async getdetallereporte(req: Request, res: Response){
+        console.log(req.body.folio)
+        await db.query(`SELECT estado_reporte.estado_reporte as estatus, reportevending as folioreporte, 
+        date_format(historialreporte_vending.fecha, '%d-%m-%Y %h:%i:%s %p') as fecha, historialreporte_vending.comentarios
+        from historialreporte_vending
+        inner join estado_reporte on historialreporte_vending.estatus=estado_reporte.idestado_reporte
+        inner join reportesvending on historialreporte_vending.reportevending=reportesvending.id
+        where reportevending=?;`,[req.body.folioreporte], function(err, result, fields){
+            if(err) throw err
+            res.json(result)
+        })
+    }
+
     public async getestatus(req: Request, res: Response){
         await db.query(`select idestado_reporte as idestatus,estado_reporte as estatus from estado_reporte order by idestado_reporte;`,req.body, function(err, result, fields){
             if(err) throw err

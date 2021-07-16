@@ -15,6 +15,7 @@ class ReportesRoutes {
         this.router.post('/registrahistorial', reportesController.registrahistorial)
         this.router.post('/getreportefolio', reportesController.getreportesvendingFolio)
         this.router.post('/getreportesvending', reportesController.getreportesvending)
+        this.router.post('/getdetallereporte', reportesController.getdetallereporte)
         this.router.get('/getestatus', reportesController.getestatus)
     }
 }

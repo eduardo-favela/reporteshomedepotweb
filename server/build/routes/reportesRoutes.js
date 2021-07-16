@@ -17,6 +17,7 @@ class ReportesRoutes {
         this.router.post('/registrahistorial', reportesController_1.default.registrahistorial);
         this.router.post('/getreportefolio', reportesController_1.default.getreportesvendingFolio);
         this.router.post('/getreportesvending', reportesController_1.default.getreportesvending);
+        this.router.post('/getdetallereporte', reportesController_1.default.getdetallereporte);
         this.router.get('/getestatus', reportesController_1.default.getestatus);
     }
 }
