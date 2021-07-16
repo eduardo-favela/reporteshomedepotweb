@@ -27,7 +27,6 @@ class ReportesController {
     }
 
     public async getreportesvending(req: Request, res: Response){
-        console.log(req.body.folio)
         await db.query(`SELECT reportesvending.id, estado_reporte.estado_reporte as estatus, 
         tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
         date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios

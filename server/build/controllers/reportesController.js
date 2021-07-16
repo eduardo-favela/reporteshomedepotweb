@@ -43,7 +43,6 @@ class ReportesController {
     }
     getreportesvending(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body.folio);
             yield database_1.default.query(`SELECT reportesvending.id, estado_reporte.estado_reporte as estatus, 
         tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
         date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios

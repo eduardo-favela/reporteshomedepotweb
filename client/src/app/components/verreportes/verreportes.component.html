@@ -7,8 +7,8 @@
                 <div class="col-md-3 mb-3">
                   <label for="folio" class="form-label">Folio de reporte</label>
                   <div class="input-group">
-                    <input #folioreporte name="folioreporte" id="folioreporte" type="number" class="form-control" placeholder="Escriba el folio del reporte" aria-describedby="button-addon2">
-                    <button (click)="buscaReporteFolio(folioreporte.value)" class="btn btn-primary" type="button" id="button-addon2">
+                    <input [(ngModel)]="folioreporte" name="folioreporte" id="folioreporte" type="number" class="form-control" placeholder="Escriba el folio del reporte" aria-describedby="button-addon2">
+                    <button (click)="buscaReporteFolio()" class="btn btn-primary" type="button" id="button-addon2">
                       <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                   </div>
@@ -32,7 +32,7 @@
                     <option *ngFor="let sucursal of sucursales " value="{{ sucursal.estado }}">{{ sucursal.estado }}</option>
                   </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 mb-3">
                   <label for="estatus">Estatus</label>
                   <select [(ngModel)]="estatusrep" class="form-control" name="estatus" id="estatusselect">
                     <option value = null disabled selected>Seleccione un estatus...</option>
@@ -41,7 +41,12 @@
                   </select>
                 </div>
                 <div class="col-md-2 mb-3">
-                  <button (click)="buscaReportes()" type="button" name="searchreports" id="btnbuscar" class="mt-4 form-control btn btn-primary">Buscar reportes <i class="ml-3 fa fa-search" aria-hidden="true"></i></button>
+                  <div class="row d-flex justify-content-center">
+                    <button (click)="buscaReportes()" type="button" name="searchreports" id="btnbuscar" class="form-control btn btn-primary">Buscar reportes <i class="ml-3 fa fa-search" aria-hidden="true"></i></button>
+                  </div>
+                  <div class="row d-flex justify-content-center">
+                    <button (click)="clearInputs()" type="button" name="clear" id="btnlimpiar" class="mt-4 form-control btn btn-warning">Limpiar <i class="ml-3 fa fa-exclamation-triangle" aria-hidden="true"></i></button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,7 +115,7 @@
 
 <!-----------------------------------------MODAL DE HISTORIAL DE REPORTES------------------------------------------>
 <div class="modal" id="detallereportemodal" role="dialog" tabindex="-1" aria-labelledby="noreportemodal" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header cardheader text-light">
         <h5 class="modal-title">Historial de cambios en el reporte con el folio: {{idReporte}}</h5>
@@ -143,7 +148,7 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-block btn-primary" data-bs-dismiss="modal">Aceptar</button>
+        <button type="button" class="btn btn-block btn-primary col-md-3" data-bs-dismiss="modal">Aceptar</button>
       </div>
     </div>
   </div>

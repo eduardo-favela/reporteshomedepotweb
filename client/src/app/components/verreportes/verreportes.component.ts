@@ -58,8 +58,7 @@ export class VerreportesComponent implements OnInit {
     )
   }
 
-  buscaReporteFolio(folioreporte){
-    this.folioreporte=folioreporte
+  buscaReporteFolio(){    
     this.reportesService.getreportefolio({folio:this.folioreporte}).subscribe(
       res=>{
         //console.log(res)
@@ -71,6 +70,7 @@ export class VerreportesComponent implements OnInit {
         }
         else{
           this.noInfo=true
+          this.folioreporte=null
           $('#noreportemodal').modal('show')
         }
       },
@@ -82,6 +82,7 @@ export class VerreportesComponent implements OnInit {
 
   buscaReportes(){
     if(this.fecha1&&this.fecha2&&this.sucursal&&this.estatusrep){
+      this.folioreporte=null
       let sucursal, estatusrep
       sucursal=(this.sucursal=="Todos"?(this.sucursales.map(a => a.estado)):(this.sucursal))
       estatusrep=(this.estatusrep=="Todos"?(this.estatus.map(a => a.idestatus)):(this.estatusrep))
@@ -92,6 +93,10 @@ export class VerreportesComponent implements OnInit {
           if(this.responsereportes.length>0){
             this.reportes=this.responsereportes
             this.noInfo=false
+          }
+          else{
+            this.noInfo=true
+            $('#noreportemodal').modal('show')
           }
         },
         err=>{
@@ -114,13 +119,23 @@ export class VerreportesComponent implements OnInit {
           $("#detallereportemodal").modal('show')          
         }
         else{
-
+          alert("No se ha encontrado información adicional de este reporte")
         }
       },
       err=>{
 
       }
     )
+  }
+  
+  clearInputs(){
+    this.folioreporte=null
+    this.fecha1=null
+    this.fecha2=null
+    this.sucursal=null
+    this.estatusrep=null
+    this.reportes=[]
+    this.noInfo=true
   }
   ///////////////////////////////////////////////////FUNCIONES//////////////////////////////////////////////////////
 }
