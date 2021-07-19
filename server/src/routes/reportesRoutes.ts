@@ -17,6 +17,7 @@ class ReportesRoutes {
         this.router.post('/getreportesvending', reportesController.getreportesvending)
         this.router.post('/getdetallereporte', reportesController.getdetallereporte)
         this.router.get('/getestatus', reportesController.getestatus)
+        this.router.post('/downloadexcel', reportesController.downloadExcelFile)
     }
 }
 

@@ -3,7 +3,7 @@
         <div class="card mb-3">
             <div class="card-header text-light text-white cardheader">VER REPORTES</div>
             <div class="card-body">
-              <div class="row">
+              <div class="row d-flex justify-content-between">
                 <div class="col-md-3 mb-3">
                   <label for="folio" class="form-label">Folio de reporte</label>
                   <div class="input-group">
@@ -12,6 +12,11 @@
                       <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                   </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-end">
+                  <button (click)="downloadExcelFile()" [hidden]="noInfo" type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar reporte en archivo excel">
+                    <img src="assets/excel.png"class="img-fluid" alt="descargaarchivoexcel">
+                  </button>
                 </div>
               </div>
               <hr class="mb-4">
@@ -74,7 +79,7 @@
                         <td>{{reporte.fecha}}</td>
                         <td>{{reporte.nombre}}</td>
                         <td>{{reporte.comentarios}}</td>
-                        <td><button (click)="onReporteButtonClick($event)" type="button" class="form-control btn btn-primary">Ver cambios en el reporte <i class="ml-3 far fa-file-alt" aria-hidden="true"></i></button></td>
+                        <td><button style="height:auto;" (click)="onReporteButtonClick($event)" type="button" class="form-control btn btn-primary">Ver cambios en el reporte <i class="ml-3 far fa-file-alt" aria-hidden="true"></i></button></td>
                       </tr>
                   </tbody>
                 </table>

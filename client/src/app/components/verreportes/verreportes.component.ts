@@ -1,5 +1,7 @@
 import { nullSafeIsEquivalent, THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import * as FileSaver from 'file-saver'
 
 import { CentroscostosService } from 'src/app/services/centroscostos.service';
 import { ReportesService } from 'src/app/services/reportes.service';
@@ -59,25 +61,31 @@ export class VerreportesComponent implements OnInit {
   }
 
   buscaReporteFolio(){    
-    this.reportesService.getreportefolio({folio:this.folioreporte}).subscribe(
-      res=>{
-        //console.log(res)
-        this.responsereportes=res
-        if(this.responsereportes.length>0){
-          this.reportes=this.responsereportes
-          this.noInfo=false
-          $('#folioreporte').val('')
+    if(this.folioreporte){
+      this.reportesService.getreportefolio({folio:this.folioreporte}).subscribe(
+        res=>{
+          this.clearInputs()
+          //console.log(res)
+          this.responsereportes=res
+          if(this.responsereportes.length>0){
+            this.reportes=this.responsereportes
+            this.noInfo=false
+            $('#folioreporte').val('')
+          }
+          else{
+            this.noInfo=true
+            this.folioreporte=null
+            $('#noreportemodal').modal('show')
+          }
+        },
+        err=>{
+          alert("Ocurrió un error con la consulta")
         }
-        else{
-          this.noInfo=true
-          this.folioreporte=null
-          $('#noreportemodal').modal('show')
-        }
-      },
-      err=>{
-        alert("Ocurrió un error con la consulta")
-      }
-    )
+      )
+    }
+    else{
+      alert("Debe proporcionar el folio del reporte que desea buscar")
+    }
   }
 
   buscaReportes(){
@@ -124,6 +132,19 @@ export class VerreportesComponent implements OnInit {
       },
       err=>{
 
+      }
+    )
+  }
+
+  downloadExcelFile(){
+    let fecha=moment().format('DDMMYYYYhhmmA')
+    this.reportesService.downloadexcelfile({reportes:this.reportes,fecha:fecha}).subscribe(
+      res=>{
+        /* console.log(res) */
+        FileSaver.saveAs(res, fecha+".xlsx")
+      },
+      err=>{
+        console.log(err)
       }
     )
   }

@@ -1,6 +1,13 @@
 import { Request, Response } from 'express'
 import db from '../database'
 import nodemailer from 'nodemailer'
+import { homedir } from 'os';
+import * as fs from 'fs'
+//@ts-ignore
+import * as xl from 'excel4node'
+/* const fs = require('fs'); */
+/* const xl = require('excel4node'); */
+
 
 class ReportesController {
 
@@ -13,7 +20,7 @@ class ReportesController {
 
     public async getreportesvendingFolio(req: Request, res: Response){
         console.log(req.body.folio)
-        await db.query(`SELECT reportesvending.id, estado_reporte.estado_reporte as estatus, 
+        await db.query(`SELECT convert(reportesvending.id,char) as id, estado_reporte.estado_reporte as estatus, 
         tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
         date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios
         FROM reportesvending 
@@ -27,7 +34,7 @@ class ReportesController {
     }
 
     public async getreportesvending(req: Request, res: Response){
-        await db.query(`SELECT reportesvending.id, estado_reporte.estado_reporte as estatus, 
+        await db.query(`SELECT convert(reportesvending.id,char) as id , estado_reporte.estado_reporte as estatus, 
         tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
         date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios
         FROM reportesvending 
@@ -36,9 +43,80 @@ class ReportesController {
         inner join tipomaq on reportesvending.tipomaq=tipomaq.idtipomaq
         inner join puntos_venta_vending on reportesvending.puntoventa=puntos_venta_vending.idtienda
         where reportesvending.fecha between ? and ?
-        and reportesvending.estatus in (?) and puntos_venta_vending.estado in (?);`,[req.body.fecha1,req.body.fecha2,req.body.estatus,req.body.sucursal], function(err, result, fields){
+        and reportesvending.estatus in (?) and puntos_venta_vending.estado in (?) limit 50;`,[req.body.fecha1,req.body.fecha2,req.body.estatus,req.body.sucursal], function(err, result, fields){
             if(err) throw err
             res.json(result)
+        })
+    }
+
+    public async downloadExcelFile(req: Request, res: Response){
+        let wb=new xl.Workbook()
+        const headingColumnNames = [
+             "Folio",
+             "Estatus",
+             "Tipo de máquina",
+             "Problema reportado",
+             "Fecha de reporte",
+             "Persona que reportó",
+             "Comentarios"
+        ]
+        const myStyle3 = wb.createStyle({
+            font:{
+                bold: true,
+                size: 14,
+                color:'FFFFFF'
+            },
+            fill: {
+                type: 'pattern',
+                patternType: 'solid',
+                bgColor: '#2F75B5',
+                fgColor: '#2F75B5',
+            }
+        })
+
+        ///////////Se crea la hoja en el libro de excel///////////
+        let ws=wb.addWorksheet("REPORTES")
+
+        ///////////Se asignan nombres a las columnas de la tabla///////////
+        let headingColumnIndex = 1;
+        headingColumnNames.forEach(heading => {
+            ws.cell(1, headingColumnIndex++)
+            .style(myStyle3)
+            .string(heading)
+        })
+        ///////////Se consultan los reportes que tienen asignado un departamento///////////
+        let reportesfexcel = req.body.reportes
+       /*  console.log(reportesfexcel) */
+        let rowIndex = 2
+        ///////////Se escriben las filas/registros en la hoja de excel///////////
+        reportesfexcel.forEach( (record:any) => {
+            let columnIndex = 1
+            Object.keys(record).forEach(columnName =>{
+                ws.cell(rowIndex,columnIndex++)
+                    .string(record [columnName])
+            })
+            rowIndex++
+        })
+
+         let fecha=req.body.fecha
+         let dir = `${__dirname}/../../assets/reportesdescargados`
+         if (!fs.existsSync(dir)){
+             fs.mkdirSync(dir)
+         }
+         wb.write(dir+'/'+fecha+'.xlsx', function(err:any, stats:any) {
+            if (err) {
+            console.log('exportareportesexcelresult',{respuesta:false, error:"Error al guardar el archivo"})
+            }
+            else {
+                console.log('exportareportesexcelresult',{respuesta:true})
+                res.download(dir+'/'+fecha+'.xlsx', (err)=>{
+                    if (err) throw err;
+                    fs.unlink(dir+'/'+fecha+'.xlsx',(err)=>{
+                        if (err) throw err;
+                        console.log('a file was deleted');   
+                    })
+                })
+            }
         })
     }
 

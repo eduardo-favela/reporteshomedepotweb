@@ -33,4 +33,8 @@ export class ReportesService {
   getdetallereporte(folio){
     return this.http.post(`${API_URI}/reportes/getdetallereporte`,folio)
   }
+
+  downloadexcelfile(reportes){
+    return this.http.post(`${API_URI}/reportes/downloadexcel`,reportes,{responseType:'blob'})
+  }
 }
