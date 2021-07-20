@@ -185,6 +185,10 @@ export class HomeComponent implements OnInit {
         $('#telefono').addClass('is-valid')
       }
     }
+    else{
+      $('#telefono').removeClass('is-valid')
+      $('#telefono').removeClass('is-invalid')
+    }
   }
 
   ///////////////////////////////////AUTOCOMPLETES///////////////////////////////////
