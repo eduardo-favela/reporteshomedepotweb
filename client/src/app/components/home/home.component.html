@@ -67,7 +67,10 @@
                         <div class="row">
                             <div class="col-md-12 mt-3">
                                 <label for="correo">Teléfono de contacto</label>
-                                <input id="telefono" class="form-control" placeholder="Escriba su telefono..." type="text" name="telefono" [(ngModel)]="telefono">
+                                <input (keyup)='onKeyUpNoTel()' id="telefono" class="form-control" placeholder="Escriba su telefono..." type="number" name="telefono" [(ngModel)]="telefono">
+                                <div class="invalid-feedback">
+                                    El número debe ser de 10 dígitos
+                                </div>
                             </div>
                         </div>
                     </div>

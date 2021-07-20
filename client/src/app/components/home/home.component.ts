@@ -83,12 +83,14 @@ export class HomeComponent implements OnInit {
     this.comentarios=null
     this.plaza=null
     this.tipomaq=null
+    $('#telefono').removeClass('is-valid')
+    $('#telefono').removeClass('is-invalid')
   }
 
   registraReporte(){
     if(this.nomEmp&&this.idpventa&&this.problema&&this.correo&&this.telefono&&this.comentarios){
-      if(this.telefono.length==10){
-        this.reportesService.registraReporte({estatus:1,tipomaq:this.tipomaq,problema_reportado:this.problema, puntoventa:this.idpventa, nombre_report:this.nomEmp, comentarios:this.comentarios, correo_contacto:this.correo, telcontacto:this.telefono}).subscribe(
+      if(this.telefono.toString().length==10){
+        this.reportesService.registraReporte({estatus:1,tipomaq:this.tipomaq,problema_reportado:this.problema, puntoventa:this.idpventa, nombre_report:this.nomEmp, comentarios:this.comentarios, correo_contacto:this.correo, telcontacto:this.telefono.toString()}).subscribe(
           res=>{
             console.log(res)
             this.responsereporte=res
@@ -145,7 +147,7 @@ export class HomeComponent implements OnInit {
     let problema=$('#problema option:selected').text()
     let maquina=$('#tipomaq option:selected').text()
     let ciudad= $('#plaza').val() 
-    let reportecontents = {comments:this.comentarios,ciudad:ciudad,maq:maquina,problema:problema,correo:this.correo,telefono:this.telefono, persona:this.nomEmp, sucursal:sucursal,
+    let reportecontents = {comments:this.comentarios,ciudad:ciudad,maq:maquina,problema:problema,correo:this.correo,telefono:this.telefono.toString(), persona:this.nomEmp, sucursal:sucursal,
       fecha:moment().format('DD-MM-YYYY'),folio:reporte.folioreporte,hora:moment().format('hh:mm A'),email:emailspruebas}
     console.log(reportecontents)  
     this.reportesService.enviarEmailinterno(reportecontents).subscribe(
@@ -169,6 +171,20 @@ export class HomeComponent implements OnInit {
         alert('Ocurrió un error')
       }
     )
+  }
+
+  onKeyUpNoTel(){
+    if(this.telefono){
+      let telefono=this.telefono.toString()
+      if(telefono.length < 10 || telefono.length > 10){
+        $('#telefono').removeClass('is-valid')
+        $('#telefono').addClass('is-invalid')
+      }
+      else if(telefono.length==10){
+        $('#telefono').removeClass('is-invalid')
+        $('#telefono').addClass('is-valid')
+      }
+    }
   }
 
   ///////////////////////////////////AUTOCOMPLETES///////////////////////////////////
