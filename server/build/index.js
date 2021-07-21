@@ -11,6 +11,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const equiposfallasRoutes_1 = __importDefault(require("./routes/equiposfallasRoutes"));
 const problemasComunesRoutes_1 = __importDefault(require("./routes/problemasComunesRoutes"));
 const reportesRoutes_1 = __importDefault(require("./routes/reportesRoutes"));
+const loginRoutes_1 = __importDefault(require("./routes/loginRoutes"));
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -31,6 +32,7 @@ class Server {
         this.app.use('/api/equipos', equiposfallasRoutes_1.default);
         this.app.use('/api/problemas', problemasComunesRoutes_1.default);
         this.app.use('/api/reportes', reportesRoutes_1.default);
+        this.app.use('/api/login', loginRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

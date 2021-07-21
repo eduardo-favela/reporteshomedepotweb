@@ -37,4 +37,8 @@ export class ReportesService {
   downloadexcelfile(reportes){
     return this.http.post(`${API_URI}/reportes/downloadexcel`,reportes,{responseType:'blob'})
   }
+
+  updateReporte(reporte){
+    return this.http.post(`${API_URI}/reportes/updatereporte`,reporte)
+  }
 }

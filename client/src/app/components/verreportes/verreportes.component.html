@@ -1,8 +1,17 @@
+<!--vereportes card-->
+
 <div class="row">
     <div class="col-md-12 mt-4">
         <div class="card mb-3">
             <div class="card-header text-light text-white cardheader">VER REPORTES</div>
             <div class="card-body">
+              <div *ngIf="[sessionStorage.getItem('user')]!='';">
+                <div class="row d-flex justify-content-end">
+                  <div class="col-md-2 d-flex justify-content-end">
+                    <button (click)="cerrarSesion()" routerLink="/mngreportes" class="mb-3 btn btn-danger">Cerrar sesión <i class="fas fa-sign-out-alt"></i></button>
+                  </div>
+                </div>
+              </div>
               <div class="row d-flex justify-content-between">
                 <div class="col-md-3 mb-3">
                   <label for="folio" class="form-label">Folio de reporte</label>
@@ -67,7 +76,7 @@
                       <th scope="col">Fecha de reporte</th>
                       <th scope="col">Persona que reportó</th>
                       <th scope="col">Comentarios</th>
-                      <th scope="col">Historial de cambios</th>
+                      <th scope="col">Detalles del reporte</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -79,7 +88,16 @@
                         <td>{{reporte.fecha}}</td>
                         <td>{{reporte.nombre}}</td>
                         <td>{{reporte.comentarios}}</td>
-                        <td><button style="height:auto;" (click)="onReporteButtonClick($event)" type="button" class="form-control btn btn-primary">Ver cambios en el reporte <i class="ml-3 far fa-file-alt" aria-hidden="true"></i></button></td>
+                        <div class="d-flex justify-content-center" *ngIf="[sessionStorage.getItem('user')]!=''; else elseBlock">
+                          <td><button style="height:auto;" (click)="onReporteButtonClick($event)" type="button" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver cambios en el reporte "><i class="far fa-file-alt" aria-hidden="true"></i></button>
+                          <button style="height:auto;" (click)="onEditReporteButtonClick($event)" type="button" class="ml-2 btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar el reporte"> <i class="fas fa-edit"></i> </button>
+                          </td>
+                        </div>
+                        <ng-template #elseBlock>
+                          <div class="d-flex justify-content-center">
+                            <td><button style="height:auto;" (click)="onReporteButtonClick($event)" type="button" class="form-control btn btn-success">Ver cambios en el reporte <i class="ml-3 far fa-file-alt" aria-hidden="true"></i></button></td>
+                          </div>
+                        </ng-template>
                       </tr>
                   </tbody>
                 </table>
@@ -124,7 +142,7 @@
     <div class="modal-content">
       <div class="modal-header cardheader text-light">
         <h5 class="modal-title">Historial de cambios en el reporte con el folio: {{idReporte}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -154,6 +172,74 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-block btn-primary col-md-3" data-bs-dismiss="modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------------MODAL DE CAMBIOS A REPORTES------------------------------------------>
+<div class="modal" id="editareportemodal" role="dialog" tabindex="-1" aria-labelledby="noreportemodal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header cardheader text-light">
+        <h5 class="modal-title">Hacer cambios en el reporte con el folio: {{idReporte}}</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+            <div class="row d-flex justify-content-between">
+              <div class="mb-3 col-md-5">
+                  <label id="selectstatus_label" for="selectstatus"></label>
+                  <div class="input-group mb-3">
+                      <label for="estatus" class="form-label">Seleccione un nuevo estatus para el reporte</label>
+                      <select [(ngModel)] = "estatusnuevo" id="selectstatus" name="selectstatus" class="form-control form-select" aria-label="selectestatus">
+                          <option value = null disabled selected>Seleccione un estatus...</option>
+                          <option *ngFor="let estado of estatus " value="{{ estado.idestatus }}">{{ estado.estatus }}</option>
+                      </select>
+                      <div class="invalid-feedback">
+                          Debe seleccionar un estatus nuevo
+                      </div>
+                  </div>
+              </div>
+              <div class="mb-3 col-md-5">
+                <label for="comentarios" class="form-label">Ingrese sus comentarios sobre el reporte</label>
+                <textarea [(ngModel)] = "commentsnew" placeholder="Escriba sus comentarios..." id="inputcomments" name="comments" rows="5" class="form-control"></textarea>
+                <div class="invalid-feedback">
+                    Debe ingresar comentarios de la actualizacion del reporte
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="guardarCambios()" type="button" class="btn btn-block btn-primary col-md-3">Guardar cambios</button>
+        <button (click)="cancelarCambios()" type="button" class="btn btn-block btn-danger col-md-3" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------------MODAL DE CAMBIOS A REPORTES------------------------------------------>
+<div class="modal" id="confirmload" role="dialog" tabindex="-1" aria-labelledby="noreportemodal" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header cardheader text-light">
+        <h5 class="modal-title">Cambios guardados</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+            <div class="row d-flex justify-content-between">
+              <h5 class="modal-title">Cambios guardados exitosamente <i class="ml-2 far fa-check-circle"></i></h5>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-block btn-success col-md-5" data-bs-dismiss="modal">Aceptar</button>
       </div>
     </div>
   </div>

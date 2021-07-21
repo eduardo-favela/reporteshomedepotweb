@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import equiposfallasRoutes from './routes/equiposfallasRoutes';
 import problemasComunesRoutes from './routes/problemasComunesRoutes';
 import reportesRoutes from './routes/reportesRoutes';
+import loginRoutes from './routes/loginRoutes';
 
 class Server {
 
@@ -31,6 +32,7 @@ class Server {
         this.app.use('/api/equipos', equiposfallasRoutes)
         this.app.use('/api/problemas', problemasComunesRoutes)
         this.app.use('/api/reportes', reportesRoutes)
+        this.app.use('/api/login', loginRoutes)
     }
     start(): void {
         this.app.listen(this.app.get('port'), () => {

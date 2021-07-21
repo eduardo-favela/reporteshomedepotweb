@@ -17,6 +17,7 @@ import { NgxGaugeModule }   from 'ngx-gauge';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReporteskioskoComponent } from './components/reporteskiosko/reporteskiosko.component';
 import { VerreportesComponent } from './components/verreportes/verreportes.component';
+import { LoginComponent } from './components/login/login.component';
 import * as $ from "jquery";
 import * as bootstrap from "bootstrap";
 
@@ -27,6 +28,7 @@ const routes:Route[]=[
   {path:'', component:HomeComponent},
   {path:'ana03012017', component:ReporteskioskoComponent},
   {path:'vereportes', component:VerreportesComponent},
+  {path:'mngreportes', component:LoginComponent},
 ]
 
 @NgModule({
@@ -35,6 +37,7 @@ const routes:Route[]=[
     HomeComponent,
     ReporteskioskoComponent,
     VerreportesComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

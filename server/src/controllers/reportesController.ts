@@ -19,7 +19,6 @@ class ReportesController {
     }
 
     public async getreportesvendingFolio(req: Request, res: Response){
-        console.log(req.body.folio)
         await db.query(`SELECT convert(reportesvending.id,char) as id, estado_reporte.estado_reporte as estatus, 
         tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
         date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios
@@ -28,6 +27,13 @@ class ReportesController {
         inner join estado_reporte on reportesvending.estatus=estado_reporte.idestado_reporte
         inner join tipomaq on reportesvending.tipomaq=tipomaq.idtipomaq
         where reportesvending.id=?`,req.body.folio, function(err, result, fields){
+            if(err) throw err
+            res.json(result)
+        })
+    }
+
+    public async updatereporte(req: Request, res: Response){
+        await db.query(`UPDATE reportesvending SET estatus = ? where id = ?`,[req.body.estatus,req.body.reportevending], function(err, result, fields){
             if(err) throw err
             res.json(result)
         })
@@ -121,7 +127,6 @@ class ReportesController {
     }
 
     public async getdetallereporte(req: Request, res: Response){
-        console.log(req.body.folio)
         await db.query(`SELECT estado_reporte.estado_reporte as estatus, reportevending as folioreporte, 
         date_format(historialreporte_vending.fecha, '%d-%m-%Y %h:%i:%s %p') as fecha, historialreporte_vending.comentarios
         from historialreporte_vending

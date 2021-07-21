@@ -12,44 +12,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const database_1 = __importDefault(require("../database"));
-const path = require('path');
 class LoginController {
-    getuser(req, res) {
+    login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            /*         console.log(req.body.idUsuario)
-                    console.log(req.body.password) */
-            yield (yield database_1.default).query(`SELECT * FROM usuarios WHERE idUsuario= '${req.body.idUsuario}' and pass='${req.body.password}'`, function (err, result, fields) {
+            yield database_1.default.query(`select * from users where user= ?`, req.body.user, function (err, result, fields) {
                 if (err)
-                    throw console.error(err);
+                    throw err;
+                if (result.length > 0) {
+                    bcrypt_1.default.compare(req.body.pass, result[0].pass, function (err, response) {
+                        res.json(response);
+                    });
+                }
                 else {
-                    /* console.log(result[0].empleados_numEmpleado) */
-                    res = res.json(result[0]);
+                    res.json(false);
                 }
             });
         });
     }
-    getUserInfo(req, res) {
+    setUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            //console.log(req.body)
-            yield (yield database_1.default).query(`SELECT idUsuario, em.nombreEmpleado  as nombre, puestos.puesto,
-        ifnull(concat(autos.marca,' ',autos.descripcion ,' ',autos.modelo),'na') as automovil,
-        dis.distrito, dis.idDistrito as distritonum, reg.region, reg.idregion as regionnum, em.foto, em.descripcion as pventa FROM usuarios 
-        right join empleados as em on usuarios.empleados_numEmpleado=em.numEmp
-        inner join puestos on em.puesto=puestos.idpuesto
-        left join autos on autos.empleados_numEmp=em.numEmp
-        inner join distritos as dis on em.distritos_idDistrito=dis.idDistrito        
-        inner join regiones as reg on em.regiones_idregion=reg.idregion
-        WHERE em.numEmp=?`, [req.body.empleados_numEmpleado], function (err, result, fields) {
-                if (err)
-                    throw console.error(err);
-                /*             else{
-                                res=res.json(result[0])
-                            } */
-                //console.log(result)
-                /* result[0].foto=`${__dirname}\\..\\..\\src\\files\\fotosEmpleados\\${result[0].foto}`
-                result[0].foto=path.normalize(result[0].foto) */
-                res.json(result[0]);
+            //ESTE MÉTODO RECIBE UN OBJETO CON DOS PROPIEDADES, UNA LLAMADA user Y OTRA LLAMADA pass
+            //CON ESTOS DATOS SE INSERTARÁ UN NUEVO USUARIO EN LA BASE DE DATOS CON UNA CONTRASEÑA ENCRIPTADA
+            const saltRounds = 13;
+            bcrypt_1.default.hash(req.body.pass, saltRounds, function (err, hash) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    req.body.pass = hash;
+                    yield database_1.default.query(`INSERT INTO users set ?`, req.body, function (err, result, fields) {
+                        if (err)
+                            throw err;
+                        res.json(result);
+                    });
+                });
+            });
+        });
+    }
+    updateUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //ESTE MÉTODO RECIBE UN OBJETO CON DOS PROPIEDADES, UNA LLAMADA user Y OTRA LLAMADA pass
+            //LA PROPIEDAD pass ES LA NUEVA CONTRASEÑA DEL USUARIO Y LA PROPIERDAD user ES EL USUARIO AL QUE SE
+            //LE VA A CAMBIAR LA CONTRASEÑA
+            const saltRounds = 13;
+            bcrypt_1.default.hash(req.body.pass, saltRounds, function (err, hash) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    req.body.pass = hash;
+                    yield database_1.default.query(`UPDATE users SET pass = ? WHERE user = ?`, [req.body.pass, req.body.user], function (err, result, fields) {
+                        if (err)
+                            throw err;
+                        res.json(result);
+                    });
+                });
             });
         });
     }

@@ -50,7 +50,6 @@ class ReportesController {
     }
     getreportesvendingFolio(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body.folio);
             yield database_1.default.query(`SELECT convert(reportesvending.id,char) as id, estado_reporte.estado_reporte as estatus, 
         tipomaq.tipomaq, problemascomunes.problema as problema_reportado, 
         date_format(reportesvending.fecha,'%d-%m-%Y %h:%i:%s %p') as fecha, nombre_report as nombre, comentarios
@@ -59,6 +58,15 @@ class ReportesController {
         inner join estado_reporte on reportesvending.estatus=estado_reporte.idestado_reporte
         inner join tipomaq on reportesvending.tipomaq=tipomaq.idtipomaq
         where reportesvending.id=?`, req.body.folio, function (err, result, fields) {
+                if (err)
+                    throw err;
+                res.json(result);
+            });
+        });
+    }
+    updatereporte(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.default.query(`UPDATE reportesvending SET estatus = ? where id = ?`, [req.body.estatus, req.body.reportevending], function (err, result, fields) {
                 if (err)
                     throw err;
                 res.json(result);
@@ -156,7 +164,6 @@ class ReportesController {
     }
     getdetallereporte(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body.folio);
             yield database_1.default.query(`SELECT estado_reporte.estado_reporte as estatus, reportevending as folioreporte, 
         date_format(historialreporte_vending.fecha, '%d-%m-%Y %h:%i:%s %p') as fecha, historialreporte_vending.comentarios
         from historialreporte_vending

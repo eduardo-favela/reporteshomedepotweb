@@ -18,11 +18,14 @@ export class VerreportesComponent implements OnInit {
   ngOnInit(): void {
     this.getSucursales()
     this.getEstatus()
+    /* console.log(sessionStorage.getItem('user')) */
   }
   
   ///////////////////////////////////VARIABLES Y PROPIEDADES GLOBALES DE LA CLASE///////////////////////////////////
   sucursales=null
   estatus=null
+  estatusnuevo=null
+  commentsnew=null
   folioreporte=null
   responsereportes : any = []
   reportes : any = []
@@ -33,6 +36,7 @@ export class VerreportesComponent implements OnInit {
   estatusrep=null
   idReporte=null
   detallesreporte : any = []
+  sessionStorage=sessionStorage
   ///////////////////////////////////VARIABLES Y PROPIEDADES GLOBALES DE LA CLASE///////////////////////////////////
 
   ///////////////////////////////////////////////////FUNCIONES//////////////////////////////////////////////////////
@@ -118,22 +122,69 @@ export class VerreportesComponent implements OnInit {
   }
 
   onReporteButtonClick(e){
-    this.idReporte = parseInt($(e.srcElement).parent().siblings('th:first').html())
+    this.idReporte = parseInt($(e.srcElement).parent().parent().siblings('th:first').html())
     this.reportesService.getdetallereporte({folioreporte:this.idReporte}).subscribe(
       res=>{
         this.detallesreporte=res
         if(this.detallesreporte.length>0){
-          console.log(res)
-          $("#detallereportemodal").modal('show')          
+          $("#detallereportemodal").modal('show')
         }
         else{
           alert("No se ha encontrado información adicional de este reporte")
         }
       },
       err=>{
-
+        alert("Ocurrió un error al tratar de obtener la información")
       }
     )
+  }
+
+  onEditReporteButtonClick(e){
+    this.idReporte = parseInt($(e.srcElement).parent().parent().siblings('th:first').html())
+    $("#editareportemodal").modal('show')
+  }
+
+  guardarCambios(){
+    if(!this.estatusnuevo){
+      $('#selectstatus').removeClass("is-valid")
+      $('#selectstatus').addClass("is-invalid")
+    }
+    else{
+      $('#selectstatus').removeClass("is-invalid")
+      $('#selectstatus').addClass("is-valid")
+
+    }
+    if(!this.commentsnew){
+      $('#inputcomments').removeClass("is-valid")
+      $('#inputcomments').addClass("is-invalid")
+    }
+    else{
+      $('#inputcomments').removeClass("is-invalid")
+      $('#inputcomments').addClass("is-valid")
+    }
+    if(this.estatusnuevo && this.commentsnew){
+      this.reportesService.registrahistorial({reportevending:this.idReporte,comentarios:this.commentsnew,estatus:this.estatusnuevo}).subscribe(
+        res=>{
+          this.reportesService.updateReporte({reportevending:this.idReporte,estatus:this.estatusnuevo}).subscribe(
+            res=>{
+              this.clearInputsEditModal()
+              $("#editareportemodal").modal('hide')
+              $("#confirmload").modal('show')
+            },
+            err=>{
+              alert("Ocurrió un error")
+            }
+          )
+        },
+        err=>{
+          alert("Ocurrió un error")
+        }
+      )
+    }
+  }
+
+  cancelarCambios(){
+    this.clearInputsEditModal()
   }
 
   downloadExcelFile(){
@@ -147,6 +198,20 @@ export class VerreportesComponent implements OnInit {
         console.log(err)
       }
     )
+  }
+
+  cerrarSesion(){
+    sessionStorage.clear()
+  }
+
+  clearInputsEditModal(){
+    $('#inputcomments').removeClass("is-valid")
+    $('#inputcomments').removeClass("is-invalid")
+    $('#selectstatus').removeClass("is-valid")
+    $('#selectstatus').removeClass("is-invalid")
+    this.estatusnuevo=null
+    this.commentsnew=null
+    this.idReporte=null
   }
   
   clearInputs(){

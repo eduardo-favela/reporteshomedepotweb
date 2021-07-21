@@ -20,6 +20,7 @@ class ReportesRoutes {
         this.router.post('/getdetallereporte', reportesController_1.default.getdetallereporte);
         this.router.get('/getestatus', reportesController_1.default.getestatus);
         this.router.post('/downloadexcel', reportesController_1.default.downloadExcelFile);
+        this.router.post('/updatereporte', reportesController_1.default.updatereporte);
     }
 }
 const reportesRoutes = new ReportesRoutes();
